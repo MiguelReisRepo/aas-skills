@@ -1,18 +1,18 @@
 # aas-skills
 
-Single-source-of-truth **Claude Code skills** for working with the **Asset
-Administration Shell (AAS, IDTA V3.x)** and the **EU Digital Product Passport
-(DPP)**.
+Personal **Claude Code skills** by Miguel Reis. The core of the repo is
+portable *domain-knowledge* skills for working with the **Asset Administration
+Shell (AAS, IDTA V3.x)** and the **EU Digital Product Passport (DPP)**.
+Additional personal-workflow skills sit alongside.
 
-These are portable *domain-knowledge* skills — they encode IDTA submodel
-templates, AASd-* metamodel constraints, IEC 61360 / ECLASS semantics, the AASX
-package format, and DPP / EU-regulation compliance (Battery Reg 2023/1542, ESPR
-2024/1781, CEN/CLC JTC 24). They are reusable across **any** AAS-editor project;
-nothing here depends on a specific application's code. Where a concrete file is
-cited, it is flagged as a *reference implementation* (e.g. AAS Studio), not a
-requirement.
+The AAS / DPP skills encode IDTA submodel templates, AASd-* metamodel
+constraints, IEC 61360 / ECLASS semantics, the AASX package format, and DPP /
+EU-regulation compliance (Battery Reg 2023/1542, ESPR 2024/1781, CEN/CLC JTC 24).
+They are reusable across **any** AAS-editor project; nothing here depends on a
+specific application's code. Where a concrete file is cited, it is flagged as a
+*reference implementation* (e.g. AAS Studio), not a requirement.
 
-## Skills
+## AAS / DPP domain skills
 
 | Skill | What it covers |
 |---|---|
@@ -22,6 +22,12 @@ requirement.
 | `iec61360` | DataSpecificationIEC61360 element set, the dataType enum, IRDI semanticId pattern, ECLASS catalogue tiers, IEC CDD, value-lists, and **§7.1 isCaseOf / supplementalSemanticId / SAMM-enum→AAS mapping**. |
 | `aasx-format` | The AASX package (OPC/ZIP) format — content-types, relationships, part structure. |
 | `dpp-knowledge` | The DPP regulatory / architecture axis — ESPR framework, CIRPASS four-layer, access tiers, data carriers. |
+
+## Personal workflow skills
+
+| Skill | What it covers |
+|---|---|
+| `linkedin-substack-posts` | LinkedIn + Substack post playbook in Miguel's established voice — the content brand on miguelreisdigitaltwins.substack.com. Captures the voice rules (Unicode bold hook, no em-dashes, no direct product mention, 2-comment LinkedIn pattern), the LinkedIn ↔ Substack structure, image-prompt conventions, and the published-series history. Drafts new weekly posts on demand. |
 
 ## Install
 
