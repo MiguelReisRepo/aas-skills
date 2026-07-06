@@ -28,6 +28,32 @@ Miguel publishes one post per week on LinkedIn, with the long-form on Substack (
 8. **Builder-first identity.** Where the post needs first-person, use "I built", "I've spent", "I've seen". Never "we", never corporate/marketing tone. The post is from one engineer to other engineers.
 9. **No "Great post!", "Couldn't agree more", "Thanks for sharing".** No motivational fluff. No empty agreement.
 10. **PT address in chat replies.** Talk to Miguel as `tu` (informal), never `você`. Posts themselves are English.
+11. **ALWAYS verify claims about standards and official documents at the source before including them in a draft.** Do not rely on memory or training data. If the draft mentions IDTA-01001, IDTA-01004, IEC 63278, ESPR 2024/1781, EU 2023/1542, EN 18216-18223, IDTA-02035, IDTA-02099-1, ECLASS IRDIs, GS1 Digital Link, or any other spec, WebFetch the official page or PDF and confirm the specific facts (title, version, model, terminology, section text) before writing them into the post. A wrong technical detail about a standard is worse than any voice slip. If the source can't be reached, say so explicitly in the delivery and mark the claim as unverified until Miguel confirms. Never fabricate details to fill in a gap.
+
+### Verify-before-draft checklist (apply to every post that names a spec)
+
+Before finalising a LinkedIn or Substack draft, for every spec or regulation named in it:
+
+- [ ] Fetched the official source (IDTA specification page, EUR-Lex text, ISO/IEC preview, GS1 standards portal, CEN/CENELEC)
+- [ ] Confirmed the exact title of the document
+- [ ] Confirmed the current version and publication date
+- [ ] Confirmed any technical claim quoted or paraphrased (access model, protocol, cardinality, semanticId, tier definition, etc.)
+- [ ] If the source paywalls or 404s, said so in the delivery and flagged the affected sentence for Miguel to verify manually
+
+### Official sources to bookmark
+
+| Standard family | Where to fetch |
+|---|---|
+| IDTA specifications (01001, 01002, 01004, 01005, 02006, 02017, 02035, 02099-1, ...) | `industrialdigitaltwin.io/aas-specifications/` (index redirects to `/aas-specifications/index/home/index.html`) |
+| ESPR (Regulation 2024/1781) | EUR-Lex |
+| EU Battery Regulation (2023/1542) | EUR-Lex |
+| EU Machinery Regulation (2023/1230) | EUR-Lex |
+| CEN/CENELEC JTC 24 (EN 18216-18223, EN 18239, EN 18246) | `cencenelec.eu` and the JTC 24 workspace |
+| GS1 Digital Link | `ref.gs1.org/standards/digital-link/` |
+| IEC 63278 (AAS umbrella standard) | `iec.ch` |
+| IEC 61360 (Common Data Dictionary) | `iec.ch` and IEC CDD |
+| ECLASS | `eclass.eu` |
+| CIRPASS reference architecture | `cirpass.eu` |
 
 ## LinkedIn post structure
 
