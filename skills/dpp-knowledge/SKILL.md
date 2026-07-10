@@ -307,6 +307,16 @@ read on the recycler tier to access disassembly instructions WITHOUT
 being granted regulator-tier access (which would expose competitor's
 supply chain). Design the tier-to-role matrix explicitly; don't conflate.
 
+**AAS Studio's shipped lattice (implementation mapping).** The table above is
+the DOMAIN role vocabulary (CIRPASS/ESPR). AAS Studio implements a COLLAPSED
+3-tier model per JRC145830: `public | professional | authority`
+(`lib/api/dpp-access.ts`, `TIERS`). Mapping: Verified/business → `professional`;
+Recycler/repairer → `professional`; Market surveillance / customs / regulator →
+`authority`. Legacy stored values (verified/business/restricted/recycler/
+customs/regulator) are normalized forward by `normalizeTier()` on READ, but the
+strict `isTier()` REJECTS them on WRITE — when driving the app (API calls,
+tests, MCP), always use the 3 current tier names, never the domain role names.
+
 ---
 
 ## 6. Lifecycle phases

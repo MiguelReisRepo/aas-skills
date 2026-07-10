@@ -729,7 +729,9 @@ v1.2** (free DIN-99100 substitute; 93 attributes with mandatory/voluntary flags 
 category + access tier + Annex XIII ref). E.g. *remaining capacity / power capability /
 round-trip efficiency* are mandatory for **LMT & Stationary** but voluntary for **EV &
 Industrial**; *capacity threshold for exhaustion* is **EV-only**; *test reports* are
-authorities-tier. Report a missing-mandatory as a `regulatory-completeness` finding
+authorities-tier (= AAS Studio's `authority` tier — the app ships a 3-tier lattice
+`public|professional|authority`; see [[dpp-knowledge]] §5 for the role→tier mapping).
+Report a missing-mandatory as a `regulatory-completeness` finding
 (distinct from `value-type` / AASd-*). Full attribute set + legal field list:
 [[dpp-aas-compliance]] §8.1–8.2.
 
