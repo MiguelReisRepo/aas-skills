@@ -112,7 +112,10 @@ Two DISJOINT subsystems exist in `MiguelReisRepo/AAS-Studio` (audited 2026-07-10
   `lib/parsers/capability-parser.ts` (parse back) + `components/submodels/capability/*`
   (render; currently unmounted); serialization via `lib/aas/serialize.ts`
   (round-trip test-locked).
-- KNOWN DRIFT vs the PDF (found by this skill's mandatory read, pending fix):
+- DRIFT vs the PDF (found by this skill's mandatory read) — ALL FIXED 2026-07-13
+  (F1, commit 199a034: normative Submodel IRI + CapabilityContainer semanticId +
+  createCapabilityRealizedBy + factory as single source + LEGACY read-tolerance).
+  Historical list, kept as the record of what the mandatory-PDF-read caught:
   1. Submodel semanticId is `…/CapabilityDescription/1/0/Submodel` — spec says
      `…/SubmodelTemplate/CapabilityDescription/1/0`.
   2. The `CapabilityName` container carries NO semanticId — spec:
@@ -124,15 +127,20 @@ Two DISJOINT subsystems exist in `MiguelReisRepo/AAS-Studio` (audited 2026-07-10
      the structure inline (aas-editor.tsx ~1196); the two can drift.
 - The Constraint* IRIs in `capability.ts` DO match the spec (§2.2.2).
 
-**World B — the `/studio/library/[id]/capabilities` Builder (NOT a submodel):**
-- Stores `CapabilityDefinition`/`CapabilityInstance` DB rows with PLACEHOLDER
-  URNs (`urn:aas-studio:capability:<slug>/1.0`) and a custom
-  requires/supports/excludes dependency model — none of it IDTA-02020.
-- Its UI claims "Output: IDTA-02020 submodel attached to this AAS"
-  (`builder.tsx:263`) but NO code emits a submodel from the instances — the
-  claim is unimplemented. Bridging it = an "instances → CapabilityDescription
-  submodel" serializer built on World A's factory (does not exist yet).
-- When working on capabilities in this app, say WHICH world explicitly.
+**World B — DELETED (2026-07-13, owner decision, council gate closed early):**
+- The `/studio/library/[id]/capabilities` visual Builder (own DB tables,
+  placeholder URNs, requires/supports/excludes model, false "Output:
+  IDTA-02020" claim) was REMOVED: routes, `CapabilityDefinition`/
+  `CapabilityInstance` Prisma models (drop migration), GDPR sweeps, OpenAPI
+  entries, `lib/builders/`. The ONLY survivor is
+  `lib/capabilities/system-catalog.ts` — its 28 definitions feed the editor's
+  Template Catalog (`lib/aas-editor/capability-catalog.ts`), which inserts
+  CONFORMANT containers. There is now exactly ONE capability subsystem.
+- World A gained since: BoM-family CapabilityTree view (multi-set per
+  [1..*], orphan guard), catalog modal, role segmented control, pencil
+  rename, inline property values, +Realized-by / +Constraint scaffolds,
+  supplementalSemanticId field, and the public passport renders
+  CapabilityCards. Matchmaking (Required↔Offered) remains a FUTURE feature.
 
 ## Sign-off checklist (only after reading the PDF)
 
