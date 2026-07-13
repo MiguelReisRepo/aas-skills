@@ -1,0 +1,473 @@
+{
+  "_meta": {
+    "spec": "IDTA 02004 Handover Documentation, Version 2.0, June 2025 (based on VDI 2770 Blatt 1:2020)",
+    "source": "IDTA-02004-2-0_Submodel_Handover-Documentation.pdf — element tables §2.4–2.9 (Tables 2–14) + classification tables (Table 1, Table 16), copied verbatim from the bundled text extraction (IDTA-02004-2-0_Submodel_Handover-Documentation.txt); the two printing anomalies below were re-verified against the PDF binary with pypdf",
+    "frozen": true,
+    "schema": {
+      "primary": "the semanticId printed in the table (ECLASS IRDI, ECLASS pair IRDI, or admin-shell.io IRI); 'VERIFY-IN-PDF' where the value is not printed/legible",
+      "supplemental": "the supplementalSemanticId(s) printed in the table — string, array where the PDF prints multiple (Document), or null where none is printed; the eclass-cdp.com URLs are the printed supplementals (pattern: '#'→'-' under https://api.eclass-cdp.com/)",
+      "modelType": "AAS modelType (Property | MultiLanguageProperty | File | ReferenceElement | Entity | SubmodelElementCollection | SubmodelElementList)",
+      "valueType": "xs:* for Properties, null otherwise",
+      "cardinality": "as printed: 1 | 0..1 | 1..* | 0..* ; 'VERIFY-IN-PDF' where the spec prints no cardinality row for the element",
+      "parent": "idShort of the containing element ('HandoverDocumentation' = submodel root)"
+    },
+    "warnings": [
+      "OrganizationShortName prints ONLY 'https://api.eclass-cdp.com/0173-1-02-ABI002-003' as its semanticId — no ECLASS IRDI, no 'supplementalSemanticId:' prefix. Verified in the PDF binary (page 14): this is printed in the spec itself, not an extraction artifact. Every sibling prints an IRDI primary + cdp supplemental; the IRDI expected by pattern would be 0173-1#02-ABI002#003 — VERIFY against the official 2.0 template AASX before hard-coding either form into a conformance gate (Annex C change #8 touched exactly the ECLASS definitions in this area).",
+      "Document's first supplementalSemanticId prints as '0173-1#02-ABI500#003~0/0173-1#01-AHF579#003' — the '~0' infix is genuinely printed in the PDF (verified in binary, page 10). Copied verbatim; do not 'fix' it without checking the official AASX.",
+      "No details tables exist for the DocumentIds / DocumentClassifications / DocumentVersions SMLs — the cardinality of the DocumentId / DocumentClassification / DocumentVersion SMCs inside them is NOT printed (1..* is implied by the set semantics and §2.1, e.g. 'Multiple DocumentVersions can be assigned to each Document'), and their orderRelevant / typeValueListElement attributes are likewise unprinted. Marked 'VERIFY-IN-PDF' — confirm against the official 2.0 AASX.",
+      "The Language SML's child Property prints idShort 'en' (Table 9) — a per-language placeholder; the language itself is the Property VALUE (ISO 639 code, example 'en'). Under metamodel 3.0, AASd-120 forbids idShort on direct SML children; the template AASX is migrated to metamodel V3.01 (Annex C change #4). The printed idShorts of ALL SML children in this spec (Document, DocumentId, en, DigitalFile, RefersToEntity, ...) are table readability only.",
+      "The submodel semanticId is an ECLASS IRDI (0173-1#01-AHF578#003), NOT an admin-shell.io IRI. The v1.x lineage used https://admin-shell.io/vdi/2770/1/0/... style IRIs (only EntitiesForDocumentation / EntityForDocumentation / DocumentedEntities / DocumentedEntity keep that namespace in 2.0). The 1.2 submodel semanticId is NOT printed in this PDF — VERIFY-IN-1-2-PDF for legacy compatibility work.",
+      "ALL ECLASS IRDIs were re-keyed to ECLASS Release 15 in 2.0 (Annex C change #2, non-backward compatible). 1.2→2.0 renames (also Nc): DocumentVersionId→Version, Summary→Description, ValueId→DocumentIdentifier.",
+      "Table 1 prints the DE class name for 03-01 as 'Montage, Demontage' against EN 'Commissioning, de-commissioning' — copied verbatim (spec-table quirk).",
+      "Annex E uses 1.x-era attribute names 'DocumentClassificationSystem' / 'DocumentClassId' when describing IEC 61355 usage — the 2.0 idShorts are ClassificationSystem / ClassId (editorial leftover in the spec)."
+    ]
+  },
+  "submodel": "0173-1#01-AHF578#003",
+  "submodelIdShort": "HandoverDocumentation",
+  "elements": {
+    "Documents": {
+      "primary": "0173-1#02-ABI500#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABI500-003",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "HandoverDocumentation",
+      "note": "orderRelevant=No, typeValueListElement=SubmodelElementCollection, semanticIdListElement=[GlobalReference, 0173-1#02-ABI500#003/0173-1#01-AHF579#003] (Table 3) — every child Document's semanticId must match it (AASd-107)"
+    },
+    "Entities": {
+      "primary": "https://admin-shell.io/vdi/2770/1/0/EntitiesForDocumentation",
+      "supplemental": null,
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "HandoverDocumentation",
+      "note": "orderRelevant=No, typeValueListElement=Entity (Table 4)"
+    },
+    "Document": {
+      "primary": "0173-1#02-ABI500#003/0173-1#01-AHF579#003",
+      "supplemental": [
+        "0173-1#02-ABI500#003~0/0173-1#01-AHF579#003",
+        "https://api.eclass-cdp.com/0173-1-02-ABI500-003/0173-1-01-AHF579-003"
+      ],
+      "modelType": "SubmodelElementCollection",
+      "valueType": null,
+      "cardinality": "1..*",
+      "parent": "Documents",
+      "note": "one SMC per VDI 2770 Document; the '~0' in the first supplemental is printed verbatim in the PDF (see _meta warning); a document existing in multiple languages = DIFFERENT Documents (§2.1)"
+    },
+    "Entity": {
+      "primary": "https://admin-shell.io/vdi/2770/1/0/EntityForDocumentation",
+      "supplemental": null,
+      "modelType": "Entity",
+      "valueType": null,
+      "cardinality": "1..*",
+      "parent": "Entities",
+      "note": "marks a sub-part (e.g. supplier part) important for the documentation; recommendation: co-managed for simple cases, self-managed (with globalAssetId, AASd-14) when the part has its own AAS; Entity elements may contain SubmodelElements but no self-standing Submodels (footnote 3, §2.9)"
+    },
+    "DocumentIds": {
+      "primary": "0173-1#02-ABI501#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABI501-003",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "Document",
+      "note": "set of document identifiers; one ID in this collection should be used as a preferred ID; orderRelevant/typeValueListElement not printed (no details table) — VERIFY-IN-PDF"
+    },
+    "DocumentClassifications": {
+      "primary": "0173-1#02-ABI502#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABI502-003",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "Document",
+      "note": "classification per VDI 2770 Blatt 1:2020 is MANDATORY (§2.3); additional systems (e.g. IEC 61355-1:2008) may be added; orderRelevant/typeValueListElement not printed — VERIFY-IN-PDF"
+    },
+    "DocumentVersions": {
+      "primary": "0173-1#02-ABI503#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABI503-003",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "Document",
+      "note": "orderRelevant/typeValueListElement not printed (no details table) — VERIFY-IN-PDF"
+    },
+    "DocumentedEntities": {
+      "primary": "https://admin-shell.io/vdi/2770/1/0/Document/DocumentedEntities",
+      "supplemental": null,
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "Document",
+      "note": "orderRelevant=No, typeValueListElement=ReferenceElement (Table 14); used when a Document relates to a dependent (self- or co-managed) Entity and not to the Asset of the AAS itself (§2.2)"
+    },
+    "DocumentId": {
+      "primary": "0173-1#02-ABI501#003/0173-1#01-AHF580#003",
+      "supplemental": null,
+      "modelType": "SubmodelElementCollection",
+      "valueType": null,
+      "cardinality": "VERIFY-IN-PDF",
+      "parent": "DocumentIds",
+      "note": "cardinality inside the DocumentIds SML not printed (1..* implied — 'set of document identifiers', at least one); identifies the Document within a given Domain; simplified tuple of domain ID + document ID (Annex D §6)"
+    },
+    "DocumentDomainId": {
+      "primary": "0173-1#02-ABH994#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABH994-003",
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentId",
+      "note": "domain in which the DocumentId is unique, e.g. name or acronym of the providing organisation"
+    },
+    "DocumentIdentifier": {
+      "primary": "0173-1#02-AAO099#004",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-AAO099-004",
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentId",
+      "note": "alphanumeric character sequence uniquely identifying a document; was idShort 'ValueId' in 1.2 (Annex C change #9, Nc)"
+    },
+    "DocumentIsPrimary": {
+      "primary": "0173-1#02-ABH995#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABH995-003",
+      "modelType": "Property",
+      "valueType": "xs:boolean",
+      "cardinality": "0..1",
+      "parent": "DocumentId",
+      "note": "flags the preferred/'primary' identifier when at least two DocumentIds exist (commonly the asset owner's view)"
+    },
+    "DocumentClassification": {
+      "primary": "0173-1#02-ABI502#003/0173-1#01-AHF581#003",
+      "supplemental": null,
+      "modelType": "SubmodelElementCollection",
+      "valueType": null,
+      "cardinality": "VERIFY-IN-PDF",
+      "parent": "DocumentClassifications",
+      "note": "cardinality inside the SML not printed (1..* implied — the VDI 2770 classification is mandatory); a Document can carry multiple classifications in one system and across systems (§2.3)"
+    },
+    "ClassId": {
+      "primary": "0173-1#02-ABH996#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABH996-003",
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentClassification",
+      "note": "unique ID of the document class within the classification system; for VDI 2770 Blatt 1:2020 use the 12 ClassIds in _meta.classifications; for IEC 61355-1:2008 a two-letter upper-case code (Annex E)"
+    },
+    "ClassName": {
+      "primary": "0173-1#02-ABJ219#002",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABJ219-002",
+      "modelType": "MultiLanguageProperty",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "DocumentClassification",
+      "note": "name of the class in the classification system; multiple languages allowed, EN is MANDATORY (§2.3)"
+    },
+    "ClassificationSystem": {
+      "primary": "0173-1#02-ABH997#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABH997-003",
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentClassification",
+      "note": "identification of the classification system; EXACT value for the mandatory system: 'VDI 2770 Blatt 1:2020' (§2.3); for the optional IEC system: 'IEC 61355-1:2008' (Annex E)"
+    },
+    "DocumentVersion": {
+      "primary": "0173-1#02-ABI503#003/0173-1#01-AHF582#003",
+      "supplemental": null,
+      "modelType": "SubmodelElementCollection",
+      "valueType": null,
+      "cardinality": "VERIFY-IN-PDF",
+      "parent": "DocumentVersions",
+      "note": "cardinality inside the SML not printed (1..* implied); shall contain at least one DigitalFile (§2.1); multiple versions of the same document = multiple DocumentVersion instances; multiple languages WITHIN one document = ONE DocumentVersion with multiple Language entries"
+    },
+    "Language": {
+      "primary": "0173-1#02-AAN468#008",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-AAN468-008",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "orderRelevant=No, typeValueListElement=Property (Table 9); language style of the document"
+    },
+    "en": {
+      "primary": "0173-1#02-AAN468#008",
+      "supplemental": null,
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1..*",
+      "parent": "Language",
+      "note": "PLACEHOLDER idShort printed in Table 9 — the actual content is the Property VALUE (ISO 639 language code, example 'en'); at least one language Property per DocumentVersion; under metamodel 3.0 SML children carry NO idShort (AASd-120)"
+    },
+    "Version": {
+      "primary": "0173-1#02-AAP003#005",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-AAP003-005",
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "was idShort 'DocumentVersionId' in 1.2 (Annex C change #6, Nc, new semanticId)"
+    },
+    "Title": {
+      "primary": "0173-1#02-ABG940#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABG940-003",
+      "modelType": "MultiLanguageProperty",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "name of the document"
+    },
+    "Subtitle": {
+      "primary": "0173-1#02-ABH998#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABH998-003",
+      "modelType": "MultiLanguageProperty",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "DocumentVersion",
+      "note": "list of language-dependent subtitles of the document"
+    },
+    "Description": {
+      "primary": "0173-1#02-AAN466#004",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-AAN466-004",
+      "modelType": "MultiLanguageProperty",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "plain text characterizing the content of the document; was idShort 'Summary' in 1.2 (Annex C change #7, Nc, new semanticId)"
+    },
+    "KeyWords": {
+      "primary": "0173-1#02-ABH999#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABH999-003",
+      "modelType": "MultiLanguageProperty",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "DocumentVersion",
+      "note": "list of language-dependent keywords of the document"
+    },
+    "StatusSetDate": {
+      "primary": "0173-1#02-ABI000#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABI000-003",
+      "modelType": "Property",
+      "valueType": "xs:date",
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "date when the document status was set"
+    },
+    "StatusValue": {
+      "primary": "0173-1#02-ABI001#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABI001-003",
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "document lifecycle milestone; the following two values should be used: 'InReview' (under review), 'Released' (released)"
+    },
+    "OrganizationShortName": {
+      "primary": "https://api.eclass-cdp.com/0173-1-02-ABI002-003",
+      "supplemental": null,
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "PRINTING ANOMALY (verified in the PDF binary): only the eclass-cdp URL is printed as the semanticId — no IRDI, no supplemental. Expected IRDI by pattern: 0173-1#02-ABI002#003 — VERIFY against the official 2.0 AASX before gating on either form. Short name of the organization (author of the document)"
+    },
+    "OrganizationOfficialName": {
+      "primary": "0173-1#02-ABI004#003",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABI004-003",
+      "modelType": "Property",
+      "valueType": "xs:string",
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "official name of the organization of the author of the document"
+    },
+    "RefersToEntities": {
+      "primary": "0173-1#02-ABK288#002",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABK288-002",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "DocumentVersion",
+      "note": "orderRelevant=No, typeValueListElement=ReferenceElement (Table 10); generic refers-to relationship to another document/document version (loose relationship); references may span multiple AAS — the AssetId shall be used as first key (§2.2)"
+    },
+    "RefersToEntity": {
+      "primary": "0173-1#02-ABK288#002",
+      "supplemental": null,
+      "modelType": "ReferenceElement",
+      "valueType": null,
+      "cardinality": "1..*",
+      "parent": "RefersToEntities"
+    },
+    "BasedOnReferences": {
+      "primary": "0173-1#02-ABK289#002",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABK289-002",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "DocumentVersion",
+      "note": "orderRelevant=No, typeValueListElement=ReferenceElement (Table 11); based-on relationship (strong), e.g. content based on specification requirements"
+    },
+    "BasedOnReference": {
+      "primary": "0173-1#02-ABK289#002",
+      "supplemental": null,
+      "modelType": "ReferenceElement",
+      "valueType": null,
+      "cardinality": "1..*",
+      "parent": "BasedOnReferences"
+    },
+    "TranslationOfEntities": {
+      "primary": "0173-1#02-ABK290#002",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABK290-002",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "DocumentVersion",
+      "note": "orderRelevant=No, typeValueListElement=ReferenceElement (Table 12); translation-of relationship (strong)"
+    },
+    "TranslationOfEntity": {
+      "primary": "0173-1#02-ABK290#002",
+      "supplemental": null,
+      "modelType": "ReferenceElement",
+      "valueType": null,
+      "cardinality": "1..*",
+      "parent": "TranslationOfEntities"
+    },
+    "DigitalFiles": {
+      "primary": "0173-1#02-ABK126#002",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABK126-002",
+      "modelType": "SubmodelElementList",
+      "valueType": null,
+      "cardinality": "1",
+      "parent": "DocumentVersion",
+      "note": "orderRelevant=No, typeValueListElement=File (Table 13); MIME-Type, file name and file contents given by the File SubmodelElement; every DocumentVersion shall contain at least one DigitalFile (§2.1)"
+    },
+    "DigitalFile": {
+      "primary": "0173-1#02-ABK126#002",
+      "supplemental": null,
+      "modelType": "File",
+      "valueType": null,
+      "cardinality": "1..*",
+      "parent": "DigitalFiles",
+      "note": "VDI 2770 requires PDF/A (ISO 19005-1/-2/-3 = PDF/A-1/-2/-3); may alternatively be provided via a link (external URL in the File value) but the linked document and the ISO 19005 file should be identical (legal requirements, e.g. Machinery Directive); multiple DigitalFiles with different MIME types must each represent the DocumentVersion IN TOTAL with equal content (§2.1)"
+    },
+    "PreviewFile": {
+      "primary": "0173-1#02-ABK127#002",
+      "supplemental": "https://api.eclass-cdp.com/0173-1-02-ABK127-002",
+      "modelType": "File",
+      "valueType": null,
+      "cardinality": "0..1",
+      "parent": "DocumentVersion",
+      "note": "DIRECT child of DocumentVersion (not inside DigitalFiles); preview image of the DocumentVersion, e.g. first page, in a commonly used image format and low resolution"
+    },
+    "DocumentedEntity": {
+      "primary": "https://admin-shell.io/vdi/2770/1/0/Document/DocumentedEntity",
+      "supplemental": null,
+      "modelType": "ReferenceElement",
+      "valueType": null,
+      "cardinality": "1..*",
+      "parent": "DocumentedEntities",
+      "note": "reference to the documented Entity — used when the Document relates to a dependent (self- or co-managed) Entity and not to the Asset of the AAS itself (§2.2)"
+    }
+  },
+  "classifications": {
+    "mandatorySystem": "VDI 2770 Blatt 1:2020",
+    "vdi2770Blatt1_2020": {
+      "classificationSystemValue": "VDI 2770 Blatt 1:2020",
+      "source": "Table 1 (§2.3), repeated in Annex B — copied verbatim",
+      "classes": [
+        { "classId": "01-01", "classNameEn": "Identification", "classNameDe": "Identifikation", "semanticId": "0173-1#07-ABU484#003" },
+        { "classId": "02-01", "classNameEn": "Technical specification", "classNameDe": "Technische Spezifikation", "semanticId": "0173-1#07-ABU485#003" },
+        { "classId": "02-02", "classNameEn": "Drawings, plans", "classNameDe": "Zeichnungen, Pläne", "semanticId": "0173-1#07-ABU486#003" },
+        { "classId": "02-03", "classNameEn": "Assemblies", "classNameDe": "Bauteile", "semanticId": "0173-1#07-ABU487#003" },
+        { "classId": "02-04", "classNameEn": "Certificates, declarations", "classNameDe": "Zeugnisse, Zertifikate, Bescheinigungen", "semanticId": "0173-1#07-ABU488#003" },
+        { "classId": "03-01", "classNameEn": "Commissioning, de-commissioning", "classNameDe": "Montage, Demontage", "semanticId": "0173-1#07-ABU489#003" },
+        { "classId": "03-02", "classNameEn": "Operation", "classNameDe": "Bedienung", "semanticId": "0173-1#07-ABU490#003" },
+        { "classId": "03-03", "classNameEn": "General safety", "classNameDe": "Allgemeine Sicherheit", "semanticId": "0173-1#07-ABU491#003" },
+        { "classId": "03-04", "classNameEn": "Inspection, maintenance, testing", "classNameDe": "Inspektion, Wartung, Prüfung", "semanticId": "0173-1#07-ABU492#003" },
+        { "classId": "03-05", "classNameEn": "Repair", "classNameDe": "Instandsetzung", "semanticId": "0173-1#07-ABU493#003" },
+        { "classId": "03-06", "classNameEn": "Spare parts", "classNameDe": "Ersatzteile", "semanticId": "0173-1#07-ABU494#003" },
+        { "classId": "04-01", "classNameEn": "Contract documents", "classNameDe": "Vertragsunterlagen", "semanticId": "0173-1#07-ABU495#003" }
+      ]
+    },
+    "iec61355_2008": {
+      "classificationSystemValue": "IEC 61355-1:2008",
+      "source": "Table 16 (Annex E) — a SELECTION; the full range of two-letter codes of IEC 61355-1:2008 may be used; ClassId = two-letter upper-case code",
+      "note": "Annex E phrases this with the 1.x names 'DocumentClassificationSystem'/'DocumentClassId'; the 2.0 idShorts are ClassificationSystem/ClassId",
+      "classes": {
+        "A": "Documentation describing documents",
+        "AA": "Administrative documents",
+        "AB": "Lists (regarding documents)",
+        "AC": "Explanatory documents (regarding documents)",
+        "B": "Management documents",
+        "BB": "Reports",
+        "BC": "Correspondence",
+        "BD": "Project control documents",
+        "BE": "Resource planning documents",
+        "BF": "Dispatch, storage and transport documents",
+        "BG": "Site planning and site organization documents",
+        "BH": "Documents regarding changes",
+        "BS": "Security documents",
+        "BT": "Training specific documents",
+        "C": "Contractual and non-technical documents",
+        "CA": "Inquiry, calculation and offer documents",
+        "CB": "Approval documents",
+        "CC": "Contractual documents",
+        "CD": "Order and delivery documents",
+        "CE": "Invoice documents",
+        "CF": "Insurance documents",
+        "CG": "Warranty documents",
+        "CH": "Expertises",
+        "D": "General technical information documents",
+        "DA": "Data sheets",
+        "DB": "Explanatory documents",
+        "DC": "Instructions and manuals",
+        "DD": "Technical reports",
+        "DE": "Catalogues Advertising documents",
+        "DF": "Technical publications",
+        "E": "Technical requirement and dimensioning documents",
+        "EA": "Legal requirement documents",
+        "EB": "Standards and regulations",
+        "EC": "Technical specification / requirement documents",
+        "ED": "Dimensioning documents",
+        "F": "Function describing documents",
+        "FA": "Functional overview documents",
+        "FB": "Flow diagrams",
+        "FC": "MMI layout documents (MMI = man-machine interface)",
+        "FE": "Function descriptions",
+        "FF": "Function diagrams",
+        "FP": "Signal descriptions",
+        "FQ": "Setting value documents",
+        "FS": "Circuitry documents",
+        "FT": "Software specific documents",
+        "L": "Location documents",
+        "LA": "Exploitation and survey documents",
+        "LB": "Earthwork and foundation work documents",
+        "LC": "Building carcass documents",
+        "LD": "On-site location documents",
+        "LH": "In-building location documents (also applied for ships, aircraft, etc.)",
+        "LU": "In/on-equipment location documents",
+        "M": "Connection describing documents",
+        "MA": "Connection documents",
+        "MB": "Cabling or piping documents",
+        "P": "Object listings",
+        "PA": "Material lists",
+        "PB": "Parts lists",
+        "PC": "Item lists",
+        "PD": "Product lists and product type lists",
+        "PF": "Function lists",
+        "PL": "Location lists",
+        "Q": "Quality management documents; safety-describing documents",
+        "QA": "Quality management documents",
+        "QB": "Safety-describing documents",
+        "QC": "Quality verifying documents",
+        "T": "Geometry-related documents",
+        "TA": "Planning drawings",
+        "TB": "Construction drawings",
+        "TC": "Manufacturing and erection drawings",
+        "TL": "Arrangement documents",
+        "W": "Operation records",
+        "WA": "Set point documents",
+        "WT": "Logbooks"
+      }
+    }
+  }
+}
