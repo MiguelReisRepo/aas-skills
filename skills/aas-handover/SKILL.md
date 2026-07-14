@@ -333,8 +333,33 @@ HandoverDocumentation submodel — DigitalFile and PreviewFile):
 
 ## AAS Studio implementation contract (for app dev)
 
-**KNOWN DRIFT found by this skill's mandatory read (2026-07-13), pending fix.**
-The app has THREE divergent handover shapes, none of them 2.0:
+**DRIFT STATUS: ALL THREE FIXED on 2026-07-14** (kept below as the historical
+record + regression map). Current state in the app:
+- `lib/templates/handover-documentation.ts` is **2.0** (IRDI submodel id,
+  full Documents SML tree, 30 elements, every semanticId verbatim from the
+  frozen map, ClassificationSystem `VDI 2770 Blatt 1:2020`, seed class 03-02).
+- `lib/ai/response-parser.ts` + `lib/ai/irdi-catalog.ts` emit the 2.0 ECLASS
+  R15 bindings (Title `ABG940#003`, Description `AAN466#004`, Language
+  `AAN468#008`, Version `AAP003#005`) with read-tolerance for the old idShorts;
+  guarded by `parser-irdi-consistency` tests.
+- NEW app layers this skill should know about: `lib/aas-editor/handover-map-2-0.json`
+  (byte-identical copy of this skill's frozen map), `handover-spec.ts`
+  (detect current/legacy incl. the ZVEI draft IRI + BOUNDED structural
+  migration 1.2/ultra-flat → 2.0 with visible diff), `handover-preview.ts`
+  (shape-tolerant read model: 2.0 SML-wrapped, 1.2 Document01, AND the
+  ultra-flat root shape real AI-extracted data uses), and
+  `components/handover/document-library.tsx` (the Document Library view;
+  council-approved interaction contract). Conformance fixture
+  `scripts/conformance/fixtures/handover-documentation.aas.xml` is a 2.0
+  instance passing the official engine.
+- Residual known gaps: `lib/ai/prompt-builder.ts` still ASKS the LLM for
+  `Summary`/`DocumentVersionId` (read-tolerance covers it; enriching to 2.0
+  keys is a fast-follow); `lib/templates/battery-passport-idta-02035.ts`
+  `buildHandoverDocument()` is still 1.x-flat; OrganizationShortName's IRDI
+  needs VERIFY vs the official AASX (the PDF prints only the cdp URL).
+
+**HISTORICAL DRIFT found by this skill's mandatory read (2026-07-13), fixed 2026-07-14.**
+The app had THREE divergent handover shapes, none of them 2.0:
 
 1. `/Users/miguel.reis/Desktop/AAS-Studio-Fable/lib/templates/handover-documentation.ts`
    — the template. Declares `IDTA-02004-1-2` / version `1.2`; submodel
