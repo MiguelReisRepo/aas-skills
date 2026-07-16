@@ -1,169 +1,165 @@
 ---
 name: aas-time-series
-description: Asset Administration Shell Time Series Data expertise — the IDTA-02008 "Time Series Data" submodel template (v1.1). Covers the two-part shape (Metadata SMC with Name/Description + the Record schema definition; Segments SMC holding InternalSegment / LinkedSegment / ExternalSegment), the segment fields (RecordCount xs:long, StartTime/EndTime xs:dateTime, SamplingInterval/SamplingRate, State, LastUpdate), the three ways time-stamped data is carried (internal in-submodel Records, linked to an external time-series DB/API, or external as a File in the .aasx package e.g. CSV), the Record/Time field-schema concept, and the admin-shell.io/idta/TimeSeries/<X>/1/1 semanticId family. Use this skill whenever the user models, reviews, or validates time-series / sensor-history / condition-monitoring / runtime-telemetry / live-twin (Track R) data as an AAS submodel, mentions IDTA-02008, TimeSeries, Segments, InternalSegment/LinkedSegment/ExternalSegment, Records, or the AAS Studio time-series template. IMPORTANT: the app's lib/templates/time-series.ts is currently a MINIMAL STUB (Metadata Name/Description + Segments/InternalSegment RecordCount/StartTime/EndTime only) — the full IDTA-02008 structure below is from the spec. The official IDTA-02008 PDF is now bundled in this skill (read it first); the [SPEC — VERIFY] rows still need reconciling line-by-line against it before any exact semanticId is wired into a conformance gate.
+description: Asset Administration Shell Time Series Data expertise — the IDTA-02008-1-1 "Time Series Data" submodel template (v1.1, March 2023). Covers the full tree (Metadata SMC with Name/Description + the Record schema of Time + measured variables; Segments SMC holding InternalSegment / LinkedSegment / ExternalSegment; each segment's Name/Description/RecordCount/StartTime/EndTime/Duration/SamplingInterval/SamplingRate/State/LastUpdate; InternalSegment's Records SMC of Record rows; LinkedSegment's Endpoint/Query; ExternalSegment's File/Blob), every verbatim admin-shell.io semanticId (submodel = .../idta/TimeSeries/1/1 with NO /Submodel suffix; segment FIELDS use the singular /TimeSeries/Segment/<x>/1/1 while segment TYPES use the plural /TimeSeries/Segments/<Type>/1/1), the four timestamp concept-descriptions (UtcTime/TaiTime/RelativeTimePoint/RelativeTimeDuration) and their IEC-CDD IRDIs, the value/segment qualifiers (ValueQuality/ValueOrigin/ValueProcessing/MeasurementModel), and the three storage strategies (internal in-submodel Records, linked to an external DB/API, external as a File/Blob). Use this skill whenever the user models, reviews, or validates time-series / sensor-history / condition-monitoring / runtime-telemetry / live-twin (Track R) data as an AAS submodel, mentions IDTA-02008, TimeSeries, Segments, InternalSegment/LinkedSegment/ExternalSegment, Records, Record schema, or the AAS Studio time-series template. RECONCILED (2026-07-16) verbatim against the bundled IDTA-02008 PDF §2.3 (Tables 2–9). IMPORTANT: the app's lib/templates/time-series.ts is a MINIMAL STUB with a WRONG submodel semanticId (it appends /Submodel) — completing it is a near-total rewrite; see the discrepancy list.
 metadata:
   type: reference
 ---
 
-# AAS Time Series Data (IDTA-02008 v1.1)
+# AAS Time Series Data (IDTA-02008-1-1 v1.1)
 
 The reference for carrying an asset's **time-stamped measurement data** — sensor
-history, condition-monitoring streams, runtime telemetry — as an AAS submodel:
-IDTA-02008 *"Time Series Data"*, v1.1. It is the submodel behind the runtime /
-live-twin direction (Track R): a stable schema (`Metadata.Record`) plus one or
-more time-bounded `Segments` that hold the data **internally**, **linked** to an
-external time-series database, or **externally** as a file in the package.
+history, condition-monitoring streams, runtime telemetry, engineering motion
+profiles — as an AAS submodel: IDTA-02008-1-1 *"Time Series Data"*, v1.1 (March
+2023). A stable schema (`Metadata.Record`) plus one or more time-bounded
+`Segments` that hold the data **internally**, **linked** to an external
+time-series database/API, or **externally** as a file/BLOB.
 
 Companion to [[aas-submodel-templates]] (the template map), [[aas-knowledge]]
 (metamodel), [[aas-validation]] (AASd-*), [[aasx-format]] (the OPC package side
-of an ExternalSegment's File), and [[iec61360]] (units/valueTypes for the
-measured variables in a Record).
+of an ExternalSegment's File), and [[iec61360]] (units + the CDD qualifiers).
 
-## ⚠ MANDATORY FIRST STEP + status of the ground truth
+## ⚠ MANDATORY FIRST STEP — read the bundled spec
 
-1. **Read the bundled official spec FIRST.** The IDTA-02008 PDF and its text
-   extraction are bundled in this skill — read the `.txt` (always works) / `.pdf`
-   (authoritative, 39 pages) before trusting any exact id below:
-   ```
-   Read: ~/.claude/skills/aas-time-series/IDTA-02008-1-1_Submodel_TimeSeriesData.txt   ← always readable
-         ~/.claude/skills/aas-time-series/IDTA-02008-1-1_Submodel_TimeSeriesData.pdf   ← authoritative (39 pages)
-   ```
-   (Repo: `skills/aas-time-series/IDTA-02008-1-1_Submodel_TimeSeriesData.{txt,pdf}`.)
-2. **The app's template is a STUB, not the full submodel.**
-   `~/Desktop/AAS-Studio-Fable/lib/templates/time-series.ts` currently seeds ONLY:
-   `Metadata{Name, Description}` and `Segments{InternalSegment{RecordCount,
-   StartTime, EndTime}}`. It is missing the **Record** schema, the segment's
-   sampling/state fields, the actual **Records** data container, and the
-   **LinkedSegment** / **ExternalSegment** variants. The tree below marks
-   `[STUB]` for what the app already has and `[SPEC — VERIFY]` for what the spec
-   defines but the app does not yet model.
-
-⚠ **This skill is NOT yet reconciled line-by-line against the full bundled PDF.**
-The `[SPEC — VERIFY]` rows were written from spec knowledge; the PDF is now bundled
-(step 1) so they can — and should — be confirmed verbatim. Read the PDF, upgrade
-each `[SPEC — VERIFY]` row to a verified id/valueType/cardinality, then delete
-this warning. Until then, never wire a `[SPEC — VERIFY]` id into a conformance
-gate.
-
-## Structure tree
-
-Submodel semanticId (verified, `[STUB]`):
-`https://admin-shell.io/idta/TimeSeries/1/1/Submodel` (idShort `TimeSeries`).
-Below, `TS` = `https://admin-shell.io/idta/TimeSeries`.
+Read the bundled official spec before authoring/reviewing any Time Series
+submodel — the .txt always works, the PDF is authoritative (39 pages; §2.3
+Tables 2–9 are the element tables):
 
 ```
-Submodel  idShort=TimeSeries
-          semanticId → TS/1/1/Submodel                         [STUB verified]
-  ├─ [SMC] Metadata ●                 semanticId=TS/Metadata/1/1        [STUB]
-  │    ├─ [MLP]  Name                                                    [STUB]
-  │    ├─ [MLP]  Description                                             [STUB]
-  │    └─ [SMC]  Record  ●            the SCHEMA of one record          [SPEC — VERIFY]
-  │              │  semanticId≈TS/Record/1/1
-  │              ├─ [Prop/Time] Time ●   the timestamp field (e.g. UtcTime)  [SPEC — VERIFY]
-  │              └─ [Prop] <Variable_1..n>   one per measured signal;
-  │                        each a Property with its own valueType + semanticId
-  │                        (units/semantics via IEC 61360 / eCLASS)      [SPEC — VERIFY]
-  └─ [SMC] Segments ●                 semanticId=TS/Segments/1/1        [STUB]
-       ├─ [SMC] InternalSegment       semanticId=TS/Segments/InternalSegment/1/1   [STUB partial]
-       │    ├─ [Prop] RecordCount     xs:long                            [STUB]
-       │    ├─ [Prop] StartTime       xs:dateTime                        [STUB]
-       │    ├─ [Prop] EndTime         xs:dateTime                        [STUB]
-       │    ├─ [Prop] SamplingInterval / SamplingRate                    [SPEC — VERIFY]
-       │    ├─ [Prop] State / LastUpdate                                 [SPEC — VERIFY]
-       │    └─ [SML/SMC] Records       the ACTUAL rows, each matching Record   [SPEC — VERIFY]
-       ├─ [SMC] LinkedSegment          points at an external TS DB/API   [SPEC — VERIFY]
-       │    └─ Endpoint (xs:anyURI), Query, + RecordCount/StartTime/EndTime
-       └─ [SMC] ExternalSegment        data as a File in the .aasx       [SPEC — VERIFY]
-            └─ [File] (e.g. text/csv) + RecordCount/StartTime/EndTime
+Read: ~/.claude/skills/aas-time-series/IDTA-02008-1-1_Submodel_TimeSeriesData.txt   ← always readable
+      ~/.claude/skills/aas-time-series/IDTA-02008-1-1_Submodel_TimeSeriesData.pdf   ← authoritative
 ```
 
-### Verified semanticIds (from the app template — `[STUB]`)
+This skill was **reconciled verbatim** against that PDF on 2026-07-16 (the earlier
+`[SPEC — VERIFY]` rows are now resolved). The value list of variable semanticIds
+is intentionally open: **the spec does NOT define semanticIds for the time-series
+variables** (§2.2.2) — the modeller picks them per measured quantity.
 
-| Element | semanticId (verbatim) | valueType |
-|---|---|---|
-| Submodel `TimeSeries` | `TS/1/1/Submodel` | — |
-| `Metadata` (SMC) | `TS/Metadata/1/1` | — |
-| `Segments` (SMC) | `TS/Segments/1/1` | — |
-| `InternalSegment` (SMC) | `TS/Segments/InternalSegment/1/1` | — |
-| `RecordCount` | *(no semanticId in the stub)* | `xs:long` |
-| `StartTime` / `EndTime` | *(no semanticId in the stub)* | `xs:dateTime` |
+## Structure tree (verbatim, §2.3)
 
-> The stub's `Name`/`Description`/`RecordCount`/`StartTime`/`EndTime` carry **no
-> element semanticIds** — the official template assigns them (e.g.
-> `TS/Metadata/Name/1/1`, `TS/Segments/InternalSegment/RecordCount/1/1`).
-> Filling those in is part of completing the submodel; take them from the
-> published JSON, not from memory.
+Submodel `TimeSeries` (idShort SHALL always be `TimeSeries`),
+semanticId `https://admin-shell.io/idta/TimeSeries/1/1` — **NOTE: NO `/Submodel`
+suffix.** Below, `TS` = `https://admin-shell.io/idta/TimeSeries`.
+Legend: ● = mandatory (card 1).
 
-## The three segment kinds (the core IDTA-02008 idea)
+```
+Submodel  idShort=TimeSeries   semanticId → TS/1/1
+  ├─ [SMC] Metadata ●                 TS/Metadata/1/1
+  │    ├─ [MLP]  Name ●               TS/Metadata/Name/1/1
+  │    ├─ [MLP]  Description  0..1     TS/Metadata/Description/1/1
+  │    └─ [SMC]  Record ●             TS/Record/1/1        ← the SCHEMA (ordered, allowDuplicated)
+  │              ├─ [Prop] Time{00} ●  1..n   one of the timestamp CDs (UtcTime/TaiTime/Relative…)
+  │              └─ [Prop] {Variable}  0..n   one per measured signal; modeller-chosen semanticId
+  └─ [SMC] Segments ●                 TS/Segments/1/1      (allowDuplicates=true)
+       ├─ [SMC] InternalSegment{00}  0..n   TS/Segments/InternalSegment/1/1
+       │    ├─ Name/Description (MLP 0..1)   TS/Segment/Name|Description/1/1
+       │    ├─ RecordCount (Prop long 0..1)  TS/Segment/RecordCount/1/1
+       │    ├─ StartTime/EndTime (Prop 0..1) TS/Segment/StartTime|EndTime/1/1   (timestamp)
+       │    ├─ Duration (Prop 0..1)          TS/Segment/Duration/1/1            (ISO-8601 dur / long)
+       │    ├─ SamplingInterval/SamplingRate (Prop long 0..1) TS/Segment/SamplingInterval|SamplingRate/1/1
+       │    ├─ State (Prop enum 0..1)        TS/Segment/State/1/1  → …/State/InProgress|Completed/1/1
+       │    ├─ LastUpdate (Prop 0..1)        TS/Segment/LastUpdate/1/1          (timestamp)
+       │    └─ [SMC] Records ●               TS/Records/1/1   (ordered, allowDuplicates=false)
+       │              └─ [SMC] Record 0..n   TS/Record/1/1    ← the actual rows (idShort = Record Id / GUID)
+       ├─ [SMC] LinkedSegment{00}  0..n     TS/Segments/LinkedSegment/1/1
+       │    ├─ (Name…LastUpdate as above, all 0..1)
+       │    ├─ [Prop] Endpoint ●            TS/Endpoint/1/1     (API server location)
+       │    └─ [Prop] Query ●               TS/Query/1/1        (generic read query)
+       └─ [SMC] ExternalSegment{00}  0..n   TS/Segments/ExternalSegment/1/1
+            ├─ (Name…LastUpdate as above, all 0..1)
+            ├─ [File] File  0..1            TS/File/1/1         (e.g. CSV part in the .aasx)
+            └─ [Blob] Blob  0..1            TS/Blob/1/1
+```
 
-Time-stamped data can live in three places; a submodel may mix them:
+### The `/Segment/` vs `/Segments/` trap (drift-prone — freeze it)
 
-1. **InternalSegment** — the records are stored **inside the submodel** (a
-   `Records` container of SMCs, each matching the `Metadata.Record` schema). Good
-   for small/handover snapshots; heavy for large streams.
-2. **LinkedSegment** — the submodel holds only a **reference** (endpoint + query)
-   to an external time-series database / API where the data actually lives. Good
-   for live/large data (the live-twin direction).
-3. **ExternalSegment** — the records are in a **File attached to the .aasx**
-   (e.g. a CSV/Parquet part), referenced by a `File` element. Package mechanics =
-   [[aasx-format]] (part in the ZIP + `[Content_Types].xml` + `aas-suppl`
-   relationship), same as [[aas-handover]]'s DigitalFiles.
+- **Segment TYPES** (the SMLs' item SMCs) are under the **plural** `Segments`:
+  `TS/Segments/InternalSegment/1/1`, `…/LinkedSegment/1/1`, `…/ExternalSegment/1/1`.
+- **Segment FIELDS** (Name, RecordCount, StartTime, …) are under the **singular**
+  `Segment`: `TS/Segment/RecordCount/1/1`, `TS/Segment/StartTime/1/1`, etc.
+- Top-level `Records`/`Record`/`Endpoint`/`Query`/`File`/`Blob`/timestamp CDs are
+  **directly** under `TS/…/1/1` (no Segment(s) infix): `TS/Records/1/1`,
+  `TS/Record/1/1`, `TS/Endpoint/1/1`, `TS/File/1/1`.
 
-`Metadata.Record` is the **schema** shared by all segments: it declares the Time
-field and the measured variables (each variable a Property with its valueType +
-semanticId), so a consumer knows how to read every segment's rows.
+### Timestamp concept-descriptions (§2.4, Table 10) — the `Time` field's semanticId
 
-## Gotchas (some VERIFY-gated until the PDF is bundled)
+| idShort | semanticId (IRI) | IEC-CDD IRDI alt | valueType |
+|---|---|---|---|
+| UtcTime | `TS/UtcTime/1/1` | `0112/2///61360_4#ADA387#001` | xs:dateTime (ISO 8601) |
+| TaiTime | `TS/TaiTime/1/1` | `0112/2///61360_4#ADA386#001` | xs:dateTime (ISO 8601) |
+| RelativeTimePoint | `TS/RelativeTimePoint/1/1` | — | seconds (REAL_MEASURE) |
+| RelativeTimeDuration | `TS/RelativeTimeDuration/1/1` | `0112/2///61360_4#AAE028#001` | seconds (REAL_MEASURE) |
 
-- **Don't ship the stub as "IDTA-02008 conformant."** Metadata without a
-  `Record`, and Segments with only counts/timestamps and no `Records`/Linked/
-  External payload, is a skeleton — it validates as generic AAS but does not
-  carry the time-series semantics the template exists for.
-- **Records vs Record.** `Record` (singular, in Metadata) = the schema. `Records`
-  (in a Segment) = the actual rows. Don't conflate them.
-- **SML-of-Property in Records → AASd-108.** If `Records`/`Language`-style lists
-  hold Property children, carry `typeValueListElement=Property` +
-  `valueTypeListElement` (see [[aas-code-reviewer]] bug class #14).
-- **Time valueType.** The timestamp is typically `xs:dateTime` (or a numeric
-  monotonic time, per the Record's declared time type) — match the Record's
-  declaration; `RecordCount` is `xs:long`.
-- **ExternalSegment File must exist in the package** with a truthful
-  `contentType` (`text/csv`, …) and be reachable via `aas-suppl` — same package-
-  test assertions as Handover DigitalFiles.
-- **Version.** The app declares `IDTA-02008-1-1` / `version '1.1'`. Confirm the
-  exact `/1/1/` in every semanticId against the published template — a `/1/0/`
-  vs `/1/1/` mismatch silently breaks semanticId matching.
+(§2.2.1/Table 4 also spell it `RelativePointInTime` — a spec inconsistency; Table 10
+uses `RelativeTimePoint`. Prefer the Table 10 form; VERIFY vs the official AASX.)
+
+### Segment qualifiers (§2.5, Table 11 — optional but standard)
+
+`ValueQualityQualifier` `0112/2///61360_4#ADA350` [good|bad|uncertain|others] ·
+`ValueOriginQualifier` `0112/2///61360_4#AAF582` [calculated|estimated|measured|set] ·
+`ValueProcessingQualifier` `0112/2///61360_4#AAF583#002` [arithmetic mean|median|RMS|…] ·
+`MeasurementModelQualifier` (defined by this SMT) [absolute|incremental].
+
+## The three segment kinds (§2.2.2, Table 1)
+
+1. **InternalSegment** — records stored IN the submodel (a `Records` SMC of
+   `Record` rows). Few data points / handover / permissions-in-AAS. Dynamic series
+   need continuous AAS updates.
+2. **LinkedSegment** — only an `Endpoint` + `Query` reference to an external
+   time-series DB/API. Mass data / dynamic series without updating the AAS.
+3. **ExternalSegment** — a `File` (e.g. CSV in the .aasx) or `Blob`. Static series
+   / handover / few accesses. Package mechanics = [[aasx-format]].
+
+`Metadata.Record` is the shared **schema** (Time + variables); each segment's rows
+match it.
+
+## Gotchas
+
+- **Wrong submodel semanticId in the app stub.** The stub emits
+  `https://admin-shell.io/idta/TimeSeries/1/1/Submodel`; the spec is
+  `https://admin-shell.io/idta/TimeSeries/1/1` (no `/Submodel`). A detector keyed
+  on the wrong id misses conformant instances.
+- **Segment field ids are singular `Segment`, segment-type ids are plural
+  `Segments`.** See the trap above — the #1 drift source here.
+- **Metadata needs a `Record` schema (mandatory).** Metadata with only
+  Name/Description (the stub) does not describe what the series measures.
+- **`RecordCount` is xs:long; timestamps xs:dateTime; SamplingInterval/Rate long;
+  Duration is an ISO-8601 duration string (or long seconds).**
+- **SML-of-Property / SMC-of-Record → AASd-108/AASd-120.** `Records` holds `Record`
+  SMCs whose idShort is the Record Id (GUID/index) — under metamodel 3.0 SML
+  children carry no idShort (know your target metamodel).
+- **Variable semanticIds are NOT defined by the spec** — pick per measured
+  quantity ([[iec61360]]); do not invent an `.../idta/TimeSeries/<var>` id.
+- **`State` is an enum with value-CDs** `…/Segment/State/InProgress/1/1` and
+  `…/Segment/State/Completed/1/1`.
 
 ## AAS Studio implementation contract
 
-- `lib/templates/time-series.ts` (`idtaSpec: 'IDTA-02008-1-1'`, `version: '1.1'`)
-  is a **minimal stub** — completing it means adding `Metadata.Record`, the
-  segment sampling/state fields, an internal `Records` container, and the
-  `LinkedSegment` / `ExternalSegment` shapes, each with its verbatim semanticId
-  from the published JSON.
-- **NOT yet built** (the per-submodel view pipeline, cf. [[aas-handover]]): the
-  frozen `time-series-map-*.json`, a `time-series-spec.ts` / `-preview.ts`, and a
-  dedicated `components/time-series/` view. Sequence in the roadmap is
-  Nameplate → Handover → **PCF** → **TimeSeries** — TimeSeries is last of the four.
-- Because TimeSeries feeds the runtime/live-twin (Track R) surface, the view will
-  likely need read-paths for LinkedSegment endpoints — design it alongside, not
-  before, completing the template.
+- `lib/templates/time-series.ts` is a **minimal stub with a wrong submodel id** —
+  completing it is effectively a rewrite: fix the submodel semanticId, add
+  `Metadata.Record`, complete InternalSegment (10 fields + `Records`), add
+  `LinkedSegment` (Endpoint/Query) and `ExternalSegment` (File/Blob), all with the
+  verbatim ids above (mind singular/plural), + a conformance fixture.
+- **NOT yet built** (per-submodel view pipeline, cf. [[aas-handover]]): the frozen
+  `time-series-map-1-1.json`, `time-series-spec.ts`/`-preview.ts`, and
+  `components/time-series/` view. Sequence: Nameplate → Handover → PCF →
+  **TimeSeries** (last of the four; template rewrite is its prerequisite).
+- v1 view scope (council-approved, docs/SUBMODEL_VIEWS_PLAN.md): static/inspection
+  — Record schema, segments timeline, a paginated Internal-records table + an
+  optional static chart **hard-capped at ~100 records**; Linked shows
+  Endpoint/Query only (no fetch); External shows the File ref only. No live
+  streaming.
 
 ## Sign-off checklist
 
-1. Read the bundled IDTA-02008 PDF/txt; reconcile the `[SPEC — VERIFY]` rows
-   against it (this skill is not yet fully reconciled).
-2. Submodel: idShort `TimeSeries`, semanticId `TS/1/1/Submodel`.
-3. `Metadata` present with `Name`, `Description`, AND a `Record` schema (Time +
-   variables) — not just Name/Description.
-4. `Segments` present with at least one of InternalSegment / LinkedSegment /
-   ExternalSegment, each carrying `RecordCount` (xs:long) + `StartTime`/`EndTime`
-   (xs:dateTime) and its actual payload (internal Records / linked endpoint /
-   external File).
-5. Every element's semanticId taken verbatim from the published JSON (exact
-   `/1/1/` version); no memory-invented strings.
-6. SML-of-Property containers carry `typeValueListElement`/`valueTypeListElement`
-   (no AASd-108); ExternalSegment File exists in the package with a truthful
-   contentType.
-7. Run [[aas-validation]] (XSD + AASd-*); do not claim IDTA-02008 conformance
-   from the stub alone.
+1. Read the bundled IDTA-02008 PDF/txt.
+2. Submodel: idShort `TimeSeries`, semanticId `TS/1/1` (NOT `…/1/1/Submodel`).
+3. `Metadata` with `Name` (●), optional `Description`, AND a `Record` schema (● —
+   Time + variables), not just Name/Description.
+4. `Segments` (●) with ≥1 of InternalSegment/LinkedSegment/ExternalSegment; segment
+   FIELD ids singular `TS/Segment/…`, TYPE ids plural `TS/Segments/…`.
+5. InternalSegment carries a `Records` SMC (●); Linked carries `Endpoint`+`Query`
+   (●●); External carries `File`/`Blob`; timestamps xs:dateTime, RecordCount xs:long.
+6. Every semanticId verbatim from the bundled spec (mind the singular/plural infix);
+   variable ids chosen per quantity (spec leaves them open).
+7. Run [[aas-validation]] (XSD + AASd-*); ship a conformance fixture passing the
+   official engine before claiming IDTA-02008 conformance.

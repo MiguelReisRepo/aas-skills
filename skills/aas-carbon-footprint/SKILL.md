@@ -42,7 +42,26 @@ template (`github.com/admin-shell-io/submodel-templates` →
 conformance gate. **If the PDF and this map/template ever disagree, the PDF
 wins** — fix this skill and the template.
 
-## Structure tree (v1.0, from the verified template)
+## RECONCILED vs the app template (2026-07-16)
+
+Read verbatim against the bundled PDF; the frozen machine map lives in the app at
+`lib/aas-editor/carbon-footprint-map-1-0.json`. Reconciliation flagged these
+**app-template discrepancies** (the map's mandatory-set check enforces them):
+
+- **`PublicationDate` is MANDATORY** (card 1, xs:dateTime, Table 4) — the app
+  template seeds it EMPTY (mandatory + xs:dateTime lexical failure).
+- **`GoodsHandoverAddress` is MANDATORY** (card 1, Table 4) and carries a printed
+  `supplementalSemanticId` ×3 (`https://admin-shell.io/smt-dropin/smt-dropin-use/1/0`;
+  `0112/2///61360_7#AAS002#001`; `0173-1#02-AAQ837#008`) — the template omits both.
+- **`LifeCyclePhases` SML id:** use `CF/LifeCyclePhases/1/0`. PDF Table 6 misprints
+  it as `CF/PcfCalculationMethods/1/0` (copy-paste from Table 5).
+- **`PcfApiEndpoint` valueType:** PDF prints `[string]`; the app template uses
+  `xs:anyURI` — VERIFY vs the official 1.0 AASX before gating valueType.
+- **`ArbitraryContent`:** PDF prints the idShort `ArbitratyContent` (typo) + type
+  `[SME]`, card 0..n; the template corrects the spelling + models it as
+  `Property[xs:string]`.
+
+## Structure tree (v1.0, verbatim from the bundled PDF §2.2)
 
 Submodel semanticId is an **admin-shell.io IRI, not an IRDI**:
 `https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/1/0`
@@ -63,10 +82,11 @@ Submodel  idShort=CarbonFootprint
   │             ├─ [Prop] QuantityOfMeasureForCalculation ●    xs:double   (amount of ref unit)
   │             ├─ [SML]  LifeCyclePhases ●          of Property xs:string
   │             │          → [Prop] LifeCyclePhase   EN 15804+A2 code(s): A1-A3 … D
-  │             ├─ [File]  ExplanatoryStatement      application/pdf (EPD / study report)
-  │             ├─ [Prop]  PublicationDate           xs:dateTime
-  │             ├─ [Prop]  ExpirationDate            xs:dateTime
-  │             └─ [SMC]   GoodsHandoverAddress      = Nameplate AddressInformation shape
+  │             ├─ [File]  ExplanatoryStatement 0..1 application/pdf (EPD / study report)
+  │             ├─ [Prop]  PublicationDate ●         xs:dateTime   ← MANDATORY (card 1), PDF Table 4
+  │             ├─ [Prop]  ExpirationDate  0..1       xs:dateTime
+  │             └─ [SMC]   GoodsHandoverAddress ●    = Nameplate AddressInformation shape ← MANDATORY (card 1)
+  │                         + supplementalSemanticId ×3 (smt-dropin-use/1/0 ; 61360_7#AAS002#001 ; 0173-1#02-AAQ837#008)
   │                         (Street, HouseNumber, ZipCode, CityTown, Country, Latitude, Longitude)
   └─ [SML] ProductOrSectorSpecificCarbonFootprints  0..1 (ZeroToOne, PACT) typeValueListElement=SMC
            └─ [SMC] ProductOrSectorSpecificCarbonFootprint  (empty by default — see PACT subtree)
