@@ -13,6 +13,20 @@ The council-approved strategy lives in memory as `project_aas_studio_marketing_s
 
 **Every post requires Miguel's approval on the LinkedIn preview screenshot before it publishes.** No exceptions.
 
+## Canonical host — always use `aas-studio.eu`
+
+Every public URL, CTA, "Try it" link, screenshot with URL bar visible, and demo endpoint **must** use `https://aas-studio.eu`. Never `aas-studio.vercel.app`.
+
+Reason: the `.vercel.app` alias is rejected by Clerk with `host_invalid` because the production Clerk publishable key (`pk_live_...`) is registered against `clerk.aas-studio.eu` and refuses other hosts. Anyone landing on `aas-studio.vercel.app/sign-in` sees a blank page. Anyone landing on `aas-studio.eu/sign-in` gets the working sign-in flow.
+
+Rule enforced everywhere:
+- Post CTAs: `Try it: https://aas-studio.eu`
+- Feature demos with URL bar visible in the screenshot: crop out `.vercel.app` if it slips in, or re-record using the canonical host.
+- API examples in posts: `https://aas-studio.eu/api/...`
+- The GS1 resolver demo endpoint used in the ArtQR experiment last week (`.vercel.app/api/dpp/01/9580000000015`) also works on the canonical (`aas-studio.eu/api/dpp/01/9580000000015`). Use the canonical going forward.
+
+If you catch a `.vercel.app` reference in an artifact you're editing, fix it in the same edit.
+
 ---
 
 ## Voice (75% professional / 25% technically opinionated)
@@ -67,7 +81,7 @@ Every feature demo needs a demonstrable artifact. Text-only feature announcement
 
 [Screenshot / GIF / short video]
 
-Try it: https://aas-studio.vercel.app
+Try it: https://aas-studio.eu
 
 #DigitalProductPassport #DigitalTwin #AssetAdministrationShell #ESPR
 ```
@@ -237,7 +251,7 @@ AAS Studio outputs AAS files ready to register: GS1 Digital Link identifiers, Dp
 
 For the standards behind the Registry, see @Miguel Reis's breakdown of the 8 CEN/CENELEC JTC 24 DPP standards published last month.
 
-Try it: https://aas-studio.vercel.app
+Try it: https://aas-studio.eu
 
 @CEN-CENELEC @European Commission @IDTAeV
 
@@ -263,7 +277,7 @@ No app to install. No login. Just the passport, filtered to the consumer's acces
 
 The QR carries an identifier, not a URL. When the manufacturer migrates hosting in 2029, the QR still works.
 
-Try it live: https://aas-studio.vercel.app
+Try it live: https://aas-studio.eu
 
 @GS1 @IDTAeV
 
