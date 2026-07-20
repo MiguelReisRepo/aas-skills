@@ -11,7 +11,7 @@ The council-approved strategy lives in memory as `project_aas_studio_marketing_s
 
 **Verify-at-source rule applies:** every technical claim about a spec/regulation must be WebFetched against the official source before publishing (same as `linkedin-substack-posts` rule 11).
 
-**Every post requires Miguel's approval on the LinkedIn preview screenshot before it publishes.** No exceptions.
+**Every post requires council approval AND Miguel's final go before publishing.** Two gates, both mandatory. See §Publish approval — council-gated below.
 
 ## Canonical host — always use `aas-studio.eu`
 
@@ -194,25 +194,56 @@ For the first 30 days of the company page:
 
 ---
 
-## Verified LinkedIn handle library
+## Handle tagging — decision framework + library
 
-Verify each handle in LinkedIn search before publishing. Handles rot when accounts rename or migrate to company pages.
+**Every post must include an explicit decision on which handles (if any) to tag in the body.** The decision is part of the draft submitted to council, and the council is expected to sanity-check the tagging choice.
 
-| Actor | Type | Handle (verify before use) | When to tag |
-|-------|------|---------------------------|-------------|
-| CEN-CENELEC | Standards body | `CEN-CENELEC` | Any post about EN 18xxx family, JTC 24 |
-| IDTA | Standards body | `IDTAeV` | Any post about IDTA specs (01001-01005, 02xxx templates) |
-| OPC Foundation | Standards body | `OPCFoundation` | AAS ↔ OPC UA interop posts |
-| ECLASS | Standards body | `ECLASSeV` | Semantic ID, IRDI, property dictionary posts |
-| GS1 | Standards body | `GS1` or country-specific (GS1 Portugal, GS1 Germany) | Digital Link, resolver, GTIN posts |
-| CIRPASS | Consortium | Verify: search "CIRPASS" | 4-tier reference architecture, DPP infra posts |
-| Catena-X Automotive Network | Consortium | `Catena-X Automotive Network` | Supply chain, SerialPart posts |
-| European Commission | Regulator | `European Commission` | ESPR, EUR-Lex references |
-| DG GROW | Regulator | Search under EC | Product policy, DPP registry |
-| DIN | Standards body | `DIN` | JTC 24 Secretariat mentions |
-| Battery Pass Consortium | Consortium | Verify: search "Battery Pass" or "thebatterypass" | IDTA-02035 / Battery Regulation posts |
+### When to tag (decision rules)
 
-Never fabricate a handle. If the search returns no exact match, drop the tag rather than guess.
+Tag a handle in the body of a post ONLY when at least one is true:
+1. **The post is genuinely about that actor's work** (e.g. a post about the EN 18xxx standards mentions CEN-CENELEC as the publisher).
+2. **The actor is likely to notice and amplify** (repost / comment) because the topic is in their content territory.
+3. **The tag helps the reader** (they can click through to learn more from a primary source).
+
+Do NOT tag when:
+- The connection is tangential ("we use Node.js, so let's tag Node.js Foundation") — noise.
+- The actor is a competitor being referenced for comparison — never tag competitors in your own broadcast posts (only in complementary comment replies, per §Interaction playbook).
+- The handle is unverified — never fabricate. If a LinkedIn search doesn't return an exact match, drop the tag.
+- The post already has 3+ tags — cap at 3 body tags to avoid looking like handle spam.
+
+### Council must approve tag choices
+
+In the council brief for every post, include a section:
+
+> **Proposed handle tags:** [list of @Handle names] with 1-sentence rationale per tag.
+> **Alternative:** publish with no tags.
+
+The council votes on whether the tags land the reach benefit without noise. Dissents preserved (e.g. Grok: "drop @CEN-CENELEC, they don't repost engineering-level posts; keep @IDTAeV only").
+
+### Verified handle library
+
+Verify each handle in LinkedIn search before publishing. Handles rot when accounts rename or migrate to company pages. If unsure, search and take a screenshot of the exact spelling before pasting into the post.
+
+| Actor | Type | Handle (verify before use) | Best-fit topics |
+|-------|------|---------------------------|-----------------|
+| CEN-CENELEC | Standards body | `CEN-CENELEC` | EN 18xxx family, JTC 24, DPP standards, EU standardization mandates |
+| IDTA | Standards body | `IDTAeV` | IDTA specs (01001-01005, 02xxx templates), AAS metamodel, DppMetadata |
+| OPC Foundation | Standards body | `OPCFoundation` | AAS ↔ OPC UA interop, NodeSet2, IEC 62541, Industry 4.0 architecture |
+| ECLASS | Standards body | `ECLASSeV` | Semantic IDs, IRDIs, property dictionaries |
+| GS1 | Standards body | `GS1` or country-specific (`GS1 Portugal`, `GS1 Germany`) | Digital Link, resolvers, GTIN, DPP identifier chain |
+| CIRPASS | Consortium | Verify via search "CIRPASS" | 4-tier reference architecture, DPP infrastructure |
+| Catena-X Automotive Network | Consortium | `Catena-X Automotive Network` | Supply chain, SerialPart, automotive DPP |
+| European Commission | Regulator | `European Commission` | ESPR, EUR-Lex citations, delegated acts, DPP Registry |
+| DG GROW | Regulator | Search under European Commission | Product policy, single market, DPP registry ops |
+| DIN | Standards body | `DIN` | JTC 24 Secretariat mentions, German industry standardization |
+| Battery Pass Consortium | Consortium | Verify via search "Battery Pass" or "thebatterypass" | IDTA-02035, Battery Regulation, Battery Pass Content Guidance |
+
+### Miguel's own tag (cross-channel)
+
+For posts that cross-link to Miguel's personal channel:
+- Tag `@Miguel Reis` when the post explicitly references his Substack article or personal position.
+- Do not tag him on every company post — that's the mechanical linking the strategy explicitly avoided (see §Q5 in the marketing strategy).
+- Rule of thumb: ~1 in every 3 posts is a reasonable rate for Miguel-tagging.
 
 ---
 
@@ -286,17 +317,71 @@ Try it live: https://aas-studio.eu
 
 ---
 
-## Screenshot approval workflow (before every publish)
+## Publish approval — council-gated (mandatory)
 
-1. Draft the post in a LinkedIn "Create post" dialog on the company page (do not publish)
-2. Screenshot the preview (mobile crop + desktop)
-3. Send screenshot to Miguel via the conversation for approval
-4. On Miguel's ✅, publish
-5. Immediately post Comment 1 (link to Substack or ecosystem link, if applicable)
-6. Immediately post Comment 2 (previous-series links only for coordinated launches)
-7. Add to the calendar file as "published" with URL
+Two gates before any post publishes: **(1) council approval on the draft content**, then **(2) Miguel's approval on the LinkedIn preview screenshot**. Never skip either. Applies to every post: feature demos, reactive spikes, standards responses, complementary comments — all of them.
 
-Never skip step 3. Even for reactive posts under time pressure — screenshot approval is 30 seconds of Miguel's time and prevents credibility hits.
+### Gate 1: Council approval on the draft
+
+Follows the `reference_knowledge_council_skill` pattern (Claude chair + Gemini + ChatGPT + Grok, ≥3/4 alignment, dissents recorded, briefs sem segredos).
+
+Workflow for every post draft:
+
+1. Claude drafts the post following this skill (voice, format, verify-at-source, canonical host).
+2. Claude submits the draft to Gemini, ChatGPT, and Grok via Playwright — drive `gemini.google.com`, `chatgpt.com`, `grok.com` in the shared authenticated Playwright profile. Standard council brief format:
+
+   > This is a draft post for the AAS Studio LinkedIn Company Page.
+   > Voice rules: 75% professional / 25% technically opinionated, product-forward, no Unicode-bold hooks.
+   > Verify-at-source: every spec/regulation claim has been checked. Please flag any you would double-check.
+   >
+   > DRAFT:
+   > [full post text]
+   >
+   > Proposed handle tags in the body: [@Handle1, @Handle2, ...] — rationale per tag in one sentence, or "none" if the draft ships tag-less.
+   > Alternative options: [publish with fewer tags / different tags / no tags].
+   >
+   > Vote on the draft: PUBLISH / REVISE / BLOCK. If REVISE or BLOCK, give the specific rationale and the suggested edit.
+   > Vote on the tags: KEEP AS PROPOSED / MODIFY (specify) / DROP ALL.
+
+3. Claude collects the three votes plus casts a chair vote. Council decision requires **≥3/4 alignment on PUBLISH**. If any council member votes REVISE or BLOCK with substantive rationale, revise the draft and re-submit.
+4. Claude summarises the council verdict for Miguel: votes per LLM, dissents preserved verbatim, final draft after any revisions.
+
+### Gate 2: Miguel's approval on the LinkedIn preview
+
+Only after council PUBLISH (≥3/4):
+
+1. Draft in a LinkedIn "Create post" dialog on the company page (do not click Post).
+2. Screenshot the preview (mobile crop + desktop).
+3. Send screenshot + council verdict to Miguel via the conversation for final approval.
+4. On Miguel's ✅, publish.
+5. Immediately post Comment 1 (link to Substack or ecosystem link, if applicable).
+6. Immediately post Comment 2 (previous-series links only for coordinated launches).
+7. Add to `content-roadmap.md` as "published" with URL.
+
+Miguel's ✅ can override a council REVISE if he chooses (chair privilege escalation), but he never publishes without at least seeing the council output.
+
+### Reactive spike short-circuit (still 2 gates, faster loop)
+
+For same-week reactive posts (24-48h from trigger):
+
+- Council brief is shorter: post draft + 1 sentence on the trigger + which strategic question it touches. Council votes fast (usually 3-5 min per LLM).
+- Miguel's approval loop is prioritised (ping via primary channel).
+- Never publish without both gates, even if the window is tight. Better to skip a reactive slot than to publish without approval.
+
+### Why two gates
+
+- **Council** catches: technical claims that don't hold up, tone drift from strategy, positioning conflicts with Miguel's personal channel, missed cross-linking opportunities, cadence mistakes.
+- **Miguel** catches: business context the LLMs can't see (pending deals, ongoing conversations with named accounts, embargo periods, partner sensitivities), and holds ultimate accountability for what the AAS Studio brand says.
+
+Both are needed. Neither alone is sufficient.
+
+### If the council can't be reached
+
+If Playwright is unavailable, LLM sessions are locked out, or the queue is being used by another project:
+
+- **Do not publish.** Queue the post in `content-roadmap.md` with a `blocked: council unavailable` note.
+- Retry the council within 4h. If still blocked, escalate to Miguel to run the council manually (open the 3 tabs, paste the brief, collect votes).
+- Never fall back to "just publish it, council would probably approve" — that defeats the gate.
 
 ---
 
