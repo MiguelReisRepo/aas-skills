@@ -28,6 +28,7 @@ specific application's code. Where a concrete file is cited, it is flagged as a
 | Skill | What it covers |
 |---|---|
 | `linkedin-substack-posts` | LinkedIn + Substack post playbook in Miguel's established voice — the content brand on miguelreisdigitaltwins.substack.com. Captures the voice rules (Unicode bold hook, no em-dashes, no direct product mention, 2-comment LinkedIn pattern), the LinkedIn ↔ Substack structure, image-prompt conventions, and the published-series history. Drafts new weekly posts on demand. |
+| `aas-studio-company-marketing` | Operating playbook for the AAS Studio LinkedIn Company Page. Product-forward voice (75% professional / 25% technically opinionated), cadence (2 feature posts/week + reactive spikes), post formats (feature demo, standards response, complementary comment), engagement/audience-pulling playbook, verified LinkedIn handle library, and screenshot-approval workflow. Complements `linkedin-substack-posts` (personal channel) without overlap. |
 | `playwright-queue` | Cooperative queue discipline for the shared Playwright MCP Chrome profile. Prevents "Browser is already in use" collisions between concurrent Claude sessions and auto-recovers from stale locks (dead Chrome PIDs). Ships a bash helper (`~/.claude/bin/playwright-queue.sh`) with `pwq_acquire` / `pwq_release`. |
 
 ## Install
