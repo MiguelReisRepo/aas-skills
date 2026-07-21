@@ -5,13 +5,29 @@ description: Operating playbook for the AAS Studio LinkedIn Company Page. Distin
 
 # AAS Studio company page playbook
 
-Product-forward marketing for the AAS Studio company page. Runs in parallel with Miguel's personal channel (thought leadership) but with different voice, cadence, and post shape.
+Product-forward marketing for the AAS Studio brand on LinkedIn (currently the personal profile persona `/in/aas-studio-eu/`, and any future Company Page at `/company/aas-studio/` if created). Operates as a standalone brand — no visible connection to any real person's channel.
 
 The council-approved strategy lives in memory as `project_aas_studio_marketing_strategy.md`. This skill operationalizes it.
 
-**Verify-at-source rule applies:** every technical claim about a spec/regulation must be WebFetched against the official source before publishing (same as `linkedin-substack-posts` rule 11).
+**Verify-at-source rule applies:** every technical claim about a spec/regulation must be WebFetched against the official source before publishing.
 
-**Every post requires council approval AND Miguel's final go before publishing.** Two gates, both mandatory. See §Publish approval — council-gated below.
+**Every post requires council approval AND the operator's final go before publishing.** Two gates, both mandatory. See §Publish approval — council-gated below.
+
+## HARD RULE — no cross-link with Miguel Reis (or any personal identity)
+
+**Never** connect AAS Studio publicly to Miguel Reis or any employee/founder's real identity. This includes:
+
+- **No @tag** of `@Miguel Reis` (or any personal handle tied to the brand's actual operator) in any AAS Studio post.
+- **No by-line** ("by Miguel Reis", "founded by...", "written by...") anywhere on AAS Studio surfaces.
+- **No "see @X's breakdown" / "further reading on their Substack"** style pointers that would let a reader triangulate.
+- **No mutual follow / connect** between the AAS Studio LinkedIn presence and the operator's personal profile, initiated from the AAS Studio side.
+- **No reshare from AAS Studio → operator's personal**, no comment thread on their posts, no reciprocal engagement.
+- **Substack `miguelreisdigitaltwins`** is a separate channel; do not mention AAS Studio there, do not link to `aas-studio.eu` there, do not reference it as "founder's Substack" here.
+- **Contact for AAS Studio matters** stays on AAS Studio surfaces only — never route through the operator's personal DMs, email, or public profile.
+
+**Reason:** the operator is employed by a company that also works with AAS. A public link between the two identities is a conflict-of-interest that can compromise their employment. This is not a stylistic preference — it is a hard operational constraint. See memory `feedback_no_cross_link_miguel_aas_studio.md`.
+
+**How to apply:** every draft passes a cross-link check before council: does the post text, structure, tags, or attached URLs let a reader deduce the operator's identity? If yes, rewrite. Council briefs must include this rule verbatim so external LLMs don't propose cross-linking edits.
 
 ## Canonical host — always use `aas-studio.eu`
 
@@ -35,18 +51,16 @@ If you catch a `.vercel.app` reference in an artifact you're editing, fix it in 
 - Technically opinionated, not personally confrontational
 - Willing to challenge poor industry practices, never as personal attacks
 - Conservative on compliance claims (understate, never overstate)
-- First-person: "AAS Studio does X", not "I built X" (that's Miguel's channel)
+- Third-person about the brand: "AAS Studio does X" — never "I built X" and never named-founder framing.
 - No emojis except 👇 in CTAs, ✅ in feature confirmation lists
-- No Unicode-bold hooks (that's the personal channel's signature)
+- Unicode-bold hooks (𝗔𝗕𝗖) are allowed as a LinkedIn attention device when a post benefits from one — but keep it product-forward, never personal-persona-signature.
 - Product-forward: every post shows the product doing the thing, or explains a concept that leads to the product doing the thing
 
-**Voice translation across channels:**
+**Voice examples (product-forward style, never personal):**
 
-| Miguel (personal) | AAS Studio (company) |
-|---|---|
-| "Most DPP platforms are building databases before solving semantic interoperability." | "A DPP implementation should preserve semantic interoperability across systems, not merely centralise product data." |
-| "Your AAS is not a DPP." | "AAS Studio adds the IDTA-02099-1 DppMetadata submodel that turns your AAS into a compliant DPP." |
-| "Stop paying an LLM to read your spreadsheet." | "Bulk Excel import in AAS Studio: 500 rows, 8 seconds, zero token cost." |
+- "A DPP implementation should preserve semantic interoperability across systems, not merely centralise product data."
+- "AAS Studio adds the IDTA-02099-1 DppMetadata submodel that turns an AAS into a compliant DPP."
+- "Bulk Excel import in AAS Studio: 500 rows, 8 seconds, zero token cost."
 
 ---
 
@@ -109,7 +123,7 @@ For hype-wave spikes when a regulator, standards body, or major ecosystem actor 
 
 [How AAS Studio handles this, if applicable: 1-2 sentences, product-forward]
 
-Further reading: [link to Miguel's Substack if relevant, or to official source]
+Further reading: [link to an official source — regulator page, IDTA spec, EN standard, CEN/CENELEC PDF. Never a personal Substack that would triangulate the operator's identity.]
 
 @[relevant handles]
 
@@ -177,20 +191,17 @@ If the company page can't add any of these, don't comment.
 - **Same-day response:** for high-value posts (standards body announcements, regulator posts), comment within 4h to catch the algorithmic surface.
 - **Batch response:** for lower-priority posts, batch 2-3 comments together, spread across the day.
 
-### Engaging with Miguel's personal posts
+### Engaging with the operator's personal channels — FORBIDDEN
 
-The company page can occasionally comment on Miguel's personal posts (rare) to add product-side context:
-
-- Miguel writes conceptual → AAS Studio comment shows the implementation ("In AAS Studio, this maps to [feature]")
-- One in every 3-4 personal posts, maximum. Any more is fatigue.
+Do NOT engage with any content authored by the operator's personal identity. No comments from AAS Studio on their posts, no likes, no reshares, no reply threads. See the HARD RULE at the top of this skill.
 
 ### Post-launch engagement wave
 
-For the first 30 days of the company page:
+For the first 30 days of the AAS Studio presence:
 
-- Repost each company post from Miguel's personal (1x within 24h) to prime the algorithm
-- Manually invite ~50 target-audience LinkedIn connections to follow the company page
-- Ask the ArtQR / Ihor Bortnikov circle (existing warm contacts in the DPP space) to follow
+- Manually invite ~50 target-audience LinkedIn connections to follow the AAS Studio page — sourced from AAS Studio's own network / cold outreach, NOT from the operator's personal network (which would triangulate).
+- Ask cold DPP-space contacts to follow (verified professional-network approach only — no reliance on the operator's private circle).
+- Do NOT reshare AAS Studio posts from the operator's personal profile. Growth must come from AAS Studio's own audience and organic reach.
 
 ---
 
@@ -238,12 +249,9 @@ Verify each handle in LinkedIn search before publishing. Handles rot when accoun
 | DIN | Standards body | `DIN` | JTC 24 Secretariat mentions, German industry standardization |
 | Battery Pass Consortium | Consortium | Verify via search "Battery Pass" or "thebatterypass" | IDTA-02035, Battery Regulation, Battery Pass Content Guidance |
 
-### Miguel's own tag (cross-channel)
+### Personal-identity tagging — FORBIDDEN
 
-For posts that cross-link to Miguel's personal channel:
-- Tag `@Miguel Reis` when the post explicitly references his Substack article or personal position.
-- Do not tag him on every company post — that's the mechanical linking the strategy explicitly avoided (see §Q5 in the marketing strategy).
-- Rule of thumb: ~1 in every 3 posts is a reasonable rate for Miguel-tagging.
+Do NOT tag the operator's personal handle. Do NOT reference their Substack, personal website, or by-line. See the HARD RULE at the top of this skill. If a post's structure naturally reaches for a personal citation ("as X explained…"), rewrite to cite the primary source instead (spec, standard, regulator, official PDF).
 
 ---
 
@@ -280,7 +288,7 @@ What manufacturers should have ready:
 
 AAS Studio outputs AAS files ready to register: GS1 Digital Link identifiers, DppMetadata submodel, and access-tier-ready structure by default.
 
-For the standards behind the Registry, see @Miguel Reis's breakdown of the 8 CEN/CENELEC JTC 24 DPP standards published last month.
+The 8 CEN/CENELEC JTC 24 DPP standards behind the Registry are EN 18216 through 18223 (CEN/CENELEC-published).
 
 Try it: https://aas-studio.eu
 
@@ -370,8 +378,8 @@ For same-week reactive posts (24-48h from trigger):
 
 ### Why two gates
 
-- **Council** catches: technical claims that don't hold up, tone drift from strategy, positioning conflicts with Miguel's personal channel, missed cross-linking opportunities, cadence mistakes.
-- **Miguel** catches: business context the LLMs can't see (pending deals, ongoing conversations with named accounts, embargo periods, partner sensitivities), and holds ultimate accountability for what the AAS Studio brand says.
+- **Council** catches: technical claims that don't hold up, tone drift from strategy, cross-link leaks that would triangulate the operator's identity, cadence mistakes.
+- **The operator** catches: business context the LLMs can't see (pending deals, ongoing conversations with named accounts, embargo periods, partner sensitivities), and holds ultimate accountability for what the AAS Studio brand says.
 
 Both are needed. Neither alone is sufficient.
 
@@ -387,10 +395,10 @@ If Playwright is unavailable, LLM sessions are locked out, or the queue is being
 
 ## Behavioural notes for Claude using this skill
 
-- **Distinct from Miguel's personal voice.** Never inherit the Unicode-bold hook, contrarian one-liners, or "I built X" framing. Company page is product-forward, third-person about AAS Studio.
+- **Product-forward, no personal-persona voice.** Third-person about AAS Studio. Never "I built X". Cross-link check runs on every draft — see HARD RULE at the top.
 - **Every post = every claim verified.** Same verify-at-source rule as `linkedin-substack-posts`. WebFetch the standard, quote the exact text, cite the source.
 - **Every post = every screenshot approved.** No exceptions.
 - **Reactive posts are earned, not scheduled.** If nothing material happened in the ecosystem this week, skip the reactive slot. Don't manufacture urgency.
-- **Coordinated with Miguel's personal channel.** Check the content-roadmap.md before publishing to confirm the week's cross-linking plan.
+- **Standalone brand — no coordination with any personal channel.** The AAS Studio calendar and cadence are independent. See HARD RULE at the top.
 - **Handle tags: verify or drop.** Never fabricate a LinkedIn handle. Search first.
 - **Interaction over broadcast.** A well-placed comment on an IDTA post reaches more of the right audience than a company post to an initially small follower base.
