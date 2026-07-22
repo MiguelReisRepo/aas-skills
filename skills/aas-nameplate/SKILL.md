@@ -233,6 +233,24 @@ skill's mandatory read (2026-07-13), pending fix:**
    `…AAO129#002`, CityTown `…AAO132#002`, NationalCode `…AAO134#002`) are not
    defined in the 02006 PDF at all — verify them against the SMT drop-in
    "Address Information" / IDTA 02002 before treating them as conformant.
+9. **Company / Phone / Email / Fax are NOT Nameplate elements — never add them to
+   AddressInformation** (the #1 silent moat-breaker; two councils + two spec PDFs
+   to settle). The Nameplate's `AddressInformation` drop-in is ADDRESS-ONLY —
+   §3.2 (line ~474): "The following SubmodelElements shall be specified within SMC
+   AddressInformation: Street, Zipcode, CityTown, NationalCode". §3.2 note (line
+   ~469): "SMC AddressInformation is part of SMC ContactInformation of SMT
+   ContactInformations [11]" — i.e. the company-contact fields live in the
+   **SEPARATE IDTA-02002 `ContactInformations` submodel**, whose `ContactInformation`
+   SMC holds `Company` (MLP, `0173-1#02-AAW001#001`, "name of the company") + the
+   nested SMCs `Phone` (→ `TelephoneNumber` `0173-1#02-AAO136#002`), `Fax`, `Email`
+   (→ `EmailAddress` `0173-1#02-AAO198#002`). The Nameplate's only company-identity
+   elements are top-level `ManufacturerName` (MLP, the manufacturer, NOT
+   NameOfSupplier/AAW001) and `CompanyLogo` (File). Putting `Company`/AAW001 as a
+   flat child inside the untyped address-only `AddressInformation` SMC violates no
+   XSD and no AASd-* rule, so it **PASSES the structural conformance gate SILENTLY**
+   while being semantically wrong. To model contact identity, build the standalone
+   IDTA-02002 `ContactInformations` submodel; never extend the Nameplate. (Verified
+   against IDTA-02006-3-0 §3.1/§3.2 + IDTA-02002-1-0 §3.1-3.5.)
 
 The frozen machine map for the conformance core is
 `skills/aas-nameplate/semanticid-map-3-0-1.json` (same directory) — extracted
